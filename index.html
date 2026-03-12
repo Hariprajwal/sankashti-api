@@ -3,29 +3,25 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Sankashti — Luxury Indian Design</title>
-    <!-- Elegant Serif and Clean Sans-Serif -->
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;600;700&display=swap"
         rel="stylesheet">
     <style>
         :root {
-            /* ══════════ PREMIUM LUXURY PALETTE ══════════ */
             --luxury-maroon: #2c0e12;
             --luxury-charcoal: #121010;
             --luxury-cream: #f9f6f0;
             --luxury-gold: #cca550;
             --luxury-gold-dim: #a68133;
             --overlay-gradient: linear-gradient(135deg, rgba(44, 14, 18, 0.92) 0%, rgba(18, 16, 16, 0.98) 100%);
-
-            /* Typography */
             --font-head: 'Cinzel', serif;
             --font-serif: 'Cormorant Garamond', serif;
             --font-sans: 'Inter', sans-serif;
         }
 
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -33,198 +29,228 @@
 
         html {
             scroll-behavior: smooth;
+            /* Prevent horizontal scroll globally */
+            overflow-x: hidden;
         }
 
         body {
             background-color: var(--luxury-charcoal);
-            /* Set Ganesha as fixed full-screen background */
             background-image: var(--overlay-gradient), url('ganesha_hero.png');
             background-size: cover;
             background-position: center top;
-            background-attachment: fixed;
+            /* Removed background-attachment:fixed — broken on iOS Safari */
+            background-attachment: scroll;
             color: var(--luxury-cream);
             font-family: var(--font-sans);
-            font-size: 1.1rem;
+            font-size: 1rem;
+            /* Slightly reduced base for mobile harmony */
             overflow-x: hidden;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            width: 100%;
+            max-width: 100vw;
         }
 
-        /* ══ LUXURY OVERLAY (Instead of noise) ══ */
-        .glass-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            pointer-events: none;
+        .page {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
         }
 
-        /* ══ HERO SECTION ══ */
+        /* ══ HERO ══ */
         .hero {
-            height: 100vh;
+            min-height: 100svh;
+            /* svh handles mobile chrome bar properly */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            /* Center everything now that Ganesha is background */
             position: relative;
             text-align: center;
-            padding: 0 2rem;
+            padding: 4rem 1.5rem 6rem;
         }
 
         .hero-title-container {
             z-index: 20;
             animation: fadeInDown 2s ease;
-            /* Remove the stone circle background, let the text float elegantly */
-            padding: 2rem;
+            padding: 1.5rem;
+            max-width: 100%;
         }
 
         .hero-eyebrow {
             font-family: var(--font-sans);
-            font-size: 1rem;
-            letter-spacing: 0.8em;
+            font-size: clamp(0.6rem, 2.5vw, 1rem);
+            letter-spacing: clamp(0.3em, 2vw, 0.8em);
             color: var(--luxury-gold);
             text-transform: uppercase;
             margin-bottom: 1.5rem;
             display: block;
             font-weight: 500;
+            word-break: break-word;
         }
 
         .hero-title {
             font-family: var(--font-head);
-            font-size: clamp(3rem, 10vw, 7rem);
+            font-size: clamp(2.8rem, 12vw, 7rem);
             font-weight: 400;
             color: var(--luxury-cream);
             text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-            /* Depth over the image */
             line-height: 1.1;
-            margin: 0;
-            padding: 0;
             letter-spacing: 0.05em;
         }
 
         .hero-tagline {
             font-family: var(--font-serif);
-            font-size: 2rem;
+            font-size: clamp(1rem, 3.5vw, 2rem);
             color: var(--luxury-cream);
             opacity: 0.8;
             margin-top: 1rem;
             font-style: italic;
             text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            max-width: 60ch;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .scroll-hint {
             position: absolute;
-            bottom: 5vh;
+            bottom: 3vh;
             left: 50%;
             transform: translateX(-50%);
             z-index: 25;
             color: var(--luxury-gold);
             font-family: var(--font-sans);
             font-weight: 500;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 0.4em;
             text-transform: uppercase;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
             opacity: 0.7;
+            white-space: nowrap;
         }
 
         .scroll-arrow {
             width: 1px;
-            height: 60px;
+            height: 50px;
             background: linear-gradient(to bottom, var(--luxury-gold), transparent);
         }
 
-        /* ══ THE LUXURY ORACLE CARDS ══ */
+        /* ══ SECTIONS WRAPPER ══ */
         .sections {
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 10rem 2rem;
+            padding: 6rem 1rem;
+            /* 1rem min horizontal padding to prevent edge bleed */
             position: relative;
             z-index: 30;
         }
 
+        /* ══ TEMPLE CARD ══ */
         .temple-card {
-            background: rgba(20, 5, 8, 0.4);
+            background: rgba(20, 5, 8, 0.45);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-
-            /* Intricate double border — ring bleeds out */
             border: 2px solid var(--luxury-gold-dim);
             outline: 1px solid var(--luxury-gold);
-            outline-offset: -10px;
-
+            outline-offset: -8px;
+            /* Reduced from -10 to prevent outline clipping on mobile */
             border-radius: 0;
-            /* Content well inside, border ring extends outward */
-            padding: 5rem 5rem;
-            margin-bottom: 8rem;
-            margin-left: -5%;
-            margin-right: -5%;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(204, 165, 80, 0.05);
+            padding: clamp(1.5rem, 5vw, 5rem);
+            margin-bottom: 5rem;
+            /* Removed negative margins — caused horizontal overflow */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(204, 165, 80, 0.04);
             position: relative;
             z-index: 10;
+            width: 100%;
+            /* Never exceed parent */
+            max-width: 100%;
+            overflow: hidden;
+            /* Clip any child overflow */
         }
 
-        /* Delicate corner ornaments */
         .temple-card::before {
             content: '✧';
             position: absolute;
-            top: 1rem;
-            left: 1rem;
+            top: 0.75rem;
+            left: 0.75rem;
             color: var(--luxury-gold);
-            font-size: 1.2rem;
+            font-size: 1rem;
             opacity: 0.9;
         }
 
         .temple-card::after {
             content: '✧';
             position: absolute;
-            bottom: 1rem;
-            right: 1rem;
+            bottom: 0.75rem;
+            right: 0.75rem;
             color: var(--luxury-gold);
-            font-size: 1.2rem;
+            font-size: 1rem;
             opacity: 0.9;
         }
 
+        /* ══ CARD INNER LAYOUT ══ */
+        .card-inner {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+            flex-shrink: 0;
+            opacity: 0.85;
+        }
+
+        .card-content {
+            flex: 1;
+            min-width: 0;
+            /* Critical: prevents flex child from overflowing */
+            overflow: hidden;
+            width: 100%;
+        }
+
+        /* ══ ORACLE HEADER ══ */
         .oracle-header {
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 1.5rem;
             margin-bottom: 1rem;
-            /* Reduced to bring divider closer */
+            flex-wrap: wrap;
         }
 
         .oracle-icon {
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             color: var(--luxury-gold);
-            /* Popping against dark bg */
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .oracle-title {
             font-family: var(--font-head);
-            font-size: 2.8rem;
+            font-size: clamp(1.5rem, 5vw, 2.8rem);
             color: var(--luxury-cream);
-            /* Changed from maroon to cream for contrast */
-            letter-spacing: 0.15em;
+            letter-spacing: 0.1em;
             font-weight: 400;
             text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
         }
 
-        /* ══ MOON PHASE DIVIDER ══ */
+        /* ══ MOON DIVIDER ══ */
         .moon-divider {
             width: 100%;
             text-align: center;
-            margin-bottom: 4rem;
-            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            font-size: clamp(0.7rem, 2.5vw, 1.1rem);
             color: var(--luxury-gold-dim);
-            letter-spacing: 0.8em;
+            letter-spacing: clamp(0.2em, 1.5vw, 0.8em);
             opacity: 0.7;
             position: relative;
+            overflow: hidden;
+            /* Prevent emoji row overflow */
         }
 
         .moon-divider::before,
@@ -232,48 +258,48 @@
             content: '';
             position: absolute;
             top: 50%;
-            width: 30%;
+            width: 25%;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--luxury-gold-dim));
         }
 
-        .moon-divider::before {
-            left: 0;
-        }
-
+        .moon-divider::before { left: 0; }
         .moon-divider::after {
             right: 0;
             background: linear-gradient(-90deg, transparent, var(--luxury-gold-dim));
         }
 
-        /* ══ UI CONTROLS ══ */
+        /* ══ TABS ══ */
         .ep-row {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 3rem;
-            /* Tighter against divider */
-            background: transparent;
-            /* Remove milky background */
-            padding: 0;
-            width: fit-content;
+            gap: 0;
+            margin-bottom: 2.5rem;
+            width: 100%;
+            /* Full width, not fit-content */
             border: none;
             border-bottom: 1px solid rgba(204, 165, 80, 0.3);
-            border-radius: 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
+
+        .ep-row::-webkit-scrollbar { display: none; }
 
         .ep-tab {
             background: transparent;
             border: none;
             color: var(--luxury-gold-dim);
             font-family: var(--font-sans);
-            font-size: 0.9rem;
+            font-size: clamp(0.65rem, 2vw, 0.85rem);
             font-weight: 500;
-            padding: 1rem 1.5rem;
+            padding: 0.9rem clamp(0.8rem, 2.5vw, 1.5rem);
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 0.2rem;
+            letter-spacing: clamp(0.05em, 0.5vw, 0.2em);
             position: relative;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .ep-tab::after {
@@ -287,108 +313,127 @@
             transition: all 0.3s ease;
         }
 
-        .ep-tab:hover {
-            color: var(--luxury-cream);
-        }
+        .ep-tab:hover { color: var(--luxury-cream); }
 
         .ep-tab.active {
             color: var(--luxury-gold);
             font-weight: 700;
         }
 
-        .ep-tab.active::after {
-            width: 100%;
-        }
+        .ep-tab.active::after { width: 100%; }
 
+        /* ══ INVOKE BUTTON ══ */
         .invoke-btn {
             background: rgba(204, 165, 80, 0.05);
             color: var(--luxury-gold);
             border: 1px solid var(--luxury-gold);
-            padding: 1.2rem 3.5rem;
+            padding: 1.1rem clamp(1.5rem, 6vw, 3.5rem);
             font-family: var(--font-sans);
-            font-size: 1rem;
+            font-size: clamp(0.75rem, 2.5vw, 1rem);
             font-weight: 400;
             border-radius: 0;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 0.4em;
+            letter-spacing: clamp(0.15em, 1vw, 0.4em);
             transition: all 0.4s ease;
+            max-width: 100%;
+            /* Never wider than card */
+            width: fit-content;
         }
 
         .invoke-btn:hover {
             background: var(--luxury-gold);
             color: var(--luxury-maroon);
-            /* Invert colors on hover */
             box-shadow: 0 0 20px rgba(204, 165, 80, 0.4);
             transform: translateY(-2px);
         }
 
-        /* ══ RESULTS ══ */
-        .result-date {
-            font-family: var(--font-head);
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            margin: 2rem 0;
-            line-height: 1.1;
-            color: var(--luxury-cream);
-            /* Changed to cream for contrast */
-            letter-spacing: 0.05em;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+        /* ══ IDLE STATE ══ */
+        .idle-state {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+            padding-top: 0.5rem;
+            width: 100%;
         }
 
-        .result-status {
+        /* ══ TYPOGRAPHY ══ */
+        .card-desc {
+            color: rgba(249, 246, 240, 0.7);
             font-family: var(--font-serif);
-            font-size: 2.2rem;
-            color: var(--luxury-gold);
-            /* Brightened */
-            margin-bottom: 1rem;
-            font-weight: 600;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
             font-style: italic;
+            line-height: 1.7;
+            max-width: 55ch;
         }
 
-        .days-chip {
+        .label-small {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--luxury-gold-dim);
+            margin-bottom: 0.4rem;
+        }
+
+        .main-date {
+            font-family: var(--font-head);
+            font-size: clamp(1.4rem, 5vw, 3rem);
+            color: var(--luxury-cream);
+            letter-spacing: 0.04em;
+            margin: 0.5rem 0 1.2rem;
+            word-break: break-word;
+            /* Long dates wrap, not overflow */
+        }
+
+        h3 {
+            font-family: var(--font-head);
+            color: var(--luxury-cream);
+            font-weight: 400;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            letter-spacing: 0.05em;
+            word-break: break-word;
+        }
+
+        /* ══ DAYS ORB ══ */
+        .days-orb {
             display: inline-flex;
             flex-direction: column;
             align-items: center;
             background: rgba(0, 0, 0, 0.3);
-            /* Dark glass behind chip */
-            padding: 2rem 4rem;
             border: 1px solid rgba(204, 165, 80, 0.4);
-            outline: 1px solid rgba(204, 165, 80, 0.1);
-            outline-offset: -4px;
-            margin: 2rem 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            padding: clamp(1rem, 3vw, 1.5rem) clamp(1.5rem, 5vw, 3rem);
+            margin: 1rem 0;
         }
 
         .days-num {
             font-family: var(--font-head);
-            font-size: 4rem;
+            font-size: clamp(2rem, 8vw, 4rem);
             color: var(--luxury-cream);
-            /* Brightened */
             line-height: 1;
         }
 
-        .days-lbl {
+        .days-label {
             font-family: var(--font-sans);
-            font-size: 0.9rem;
+            font-size: 0.72rem;
             letter-spacing: 0.3em;
             color: var(--luxury-gold-dim);
             text-transform: uppercase;
-            margin-top: 0.5rem;
-            font-weight: 500;
+            margin-top: 0.3rem;
         }
 
+        /* ══ BACK BUTTON ══ */
         .btn-back {
             background: transparent;
             border: 1px solid var(--luxury-gold-dim);
             color: var(--luxury-gold);
-            /* Gold instead of maroon */
             font-family: var(--font-sans);
-            padding: 0.8rem 2rem;
+            padding: 0.7rem 1.8rem;
             border-radius: 0;
-            /* Match sharp geometry */
             cursor: pointer;
-            font-size: 0.8rem;
-            margin-bottom: 3rem;
+            font-size: 0.75rem;
+            margin-bottom: 2.5rem;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.2em;
@@ -401,23 +446,39 @@
             border-color: var(--luxury-gold);
         }
 
-        /* ══ GRID ══ */
+        /* ══ ABOUT TEXT ══ */
+        .about-text {
+            color: rgba(249, 246, 240, 0.7);
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+            margin-top: 1rem;
+            line-height: 1.7;
+            max-width: 55ch;
+            word-break: break-word;
+        }
+
+        .res-sub { padding-top: 0.8rem; }
+
+        /* ══ YEAR GRID ══ */
         .year-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+            /* min() prevents overflow */
+            gap: 1.2rem;
+            margin-top: 2rem;
+            width: 100%;
         }
 
         .year-card {
             background: rgba(0, 0, 0, 0.4);
-            /* Dark glass for cards */
-            padding: 2rem;
+            padding: 1.5rem;
             border: 1px solid rgba(204, 165, 80, 0.3);
             transition: all 0.4s ease;
             position: relative;
             color: var(--luxury-cream);
-            /* Text white inside grid */
+            word-break: break-word;
+            overflow: hidden;
         }
 
         .year-card::before {
@@ -439,148 +500,141 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(204, 165, 80, 0.1);
         }
 
-        .year-card:hover::before {
+        .year-card:hover::before { opacity: 1; }
+
+        /* ══ YEAR INPUT ══ */
+        .year-input-row { margin-top: 1.5rem; }
+
+        .api-in {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(204, 165, 80, 0.4);
+            color: var(--luxury-cream);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            outline: none;
+            width: 120px;
+            max-width: 100%;
+            padding: 0.3rem;
+            transition: border-color 0.3s;
+        }
+
+        .api-in:focus { border-bottom: 1px solid var(--luxury-gold); }
+
+        /* ══ SETTINGS WIDGET ══ */
+        .settings-widget {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .settings-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(20, 5, 8, 0.75);
+            border: 1px solid var(--luxury-gold-dim);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--luxury-gold);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1001;
+        }
+
+        .settings-widget:hover .settings-icon {
+            background: var(--luxury-gold);
+            color: var(--luxury-maroon);
+        }
+
+        .api-inner {
+            background: rgba(20, 5, 8, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 0.75rem 1.2rem 0.75rem 1.2rem;
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            align-items: center;
+            border: 1px solid var(--luxury-gold-dim);
+            opacity: 0;
+            transform: translateX(10px);
+            visibility: hidden;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: absolute;
+            right: 52px;
+            /* Just to left of icon */
+            top: 0;
+            max-width: calc(100vw - 80px);
+            /* Never overflow viewport */
+        }
+
+        .settings-widget:hover .api-inner {
             opacity: 1;
+            transform: translateX(0);
+            visibility: visible;
+        }
+
+        .api-lbl {
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            color: var(--luxury-gold-dim);
+            white-space: nowrap;
+        }
+
+        /* Wider api-in inside settings */
+        .api-inner .api-in {
+            width: clamp(120px, 30vw, 200px);
+        }
+
+        .toggle-btn {
+            background: transparent;
+            color: var(--luxury-gold);
+            border: 1px solid var(--luxury-gold-dim);
+            padding: 0.35rem 0.9rem;
+            border-radius: 30px;
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .toggle-btn:hover {
+            background: var(--luxury-gold);
+            color: var(--luxury-maroon);
         }
 
         /* ══ FOOTER ══ */
         .footer-sloka {
             text-align: center;
-            padding: 5rem 2rem;
+            padding: clamp(3rem, 8vw, 5rem) 1.5rem;
             position: relative;
         }
 
-        .sloka-text {
-            font-family: var(--font-serif);
-            font-size: 2.2rem;
-            color: var(--luxury-cream);
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            font-style: italic;
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
-        }
-
-        footer {
-            text-align: center;
-            padding: 3rem 2rem;
-            font-family: var(--font-sans);
-            color: rgba(249, 246, 240, 0.6);
-            font-size: 0.8rem;
-            letter-spacing: 0.4em;
-            border-top: 1px solid rgba(204, 165, 80, 0.2);
-            text-transform: uppercase;
-        }
-
-        /* ══ CARD LAYOUT ══ */
-        .card-inner {
-            display: flex;
-            gap: 2rem;
-            align-items: flex-start;
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            line-height: 1;
-            flex-shrink: 0;
-            opacity: 0.8;
-        }
-
-        .card-content {
-            flex: 1;
-            min-width: 0;
-            overflow: hidden;
-            /* no boundary escape */
-        }
-
-        /* ══ IDLE STATE (before consulting) ══ */
-        .idle-state {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1.5rem;
-            padding-top: 0.5rem;
-        }
-
-        /* ══ TYPOGRAPHY INSIDE CARDS ══ */
-        .card-desc {
-            color: rgba(249, 246, 240, 0.7);
-            font-family: var(--font-serif);
-            font-size: 1.2rem;
-            font-style: italic;
-            margin-bottom: 0;
-            line-height: 1.7;
-        }
-
-        .label-small {
-            font-family: var(--font-sans);
-            font-size: 0.75rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--luxury-gold-dim);
-            margin-bottom: 0.5rem;
-        }
-
-        .main-date {
-            font-family: var(--font-head);
-            font-size: clamp(1.8rem, 4vw, 3rem);
-            color: var(--luxury-cream);
-            letter-spacing: 0.05em;
-            margin: 0.5rem 0 1.5rem;
-        }
-
-        .days-orb {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(204, 165, 80, 0.4);
-            padding: 1.5rem 3rem;
-            margin: 1rem 0;
-        }
-
-        .days-label {
-            font-family: var(--font-sans);
-            font-size: 0.75rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--luxury-gold-dim);
-            margin-top: 0.3rem;
-        }
-
-        .about-text {
-            color: rgba(249, 246, 240, 0.7);
-            font-family: var(--font-serif);
-            font-style: italic;
-            font-size: 1.1rem;
-            margin-top: 1.5rem;
-            line-height: 1.7;
-            max-width: 55ch;
-        }
-
-        .res-sub {
-            padding-top: 1rem;
-        }
-
-        h3 {
-            font-family: var(--font-head);
-            color: var(--luxury-cream);
-            font-weight: 400;
-            font-size: 1.8rem;
-            letter-spacing: 0.05em;
-        }
-
-        /* ══ FOOTER ORNAMENT ══ */
         .sloka-orn {
             display: flex;
             align-items: center;
             gap: 1rem;
             justify-content: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .sloka-orn .ln {
             flex: 1;
-            max-width: 120px;
+            max-width: 100px;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--luxury-gold-dim));
         }
@@ -594,386 +648,145 @@
             font-size: 1rem;
         }
 
-        .sloka-deva {
+        .sloka-text {
             font-family: var(--font-serif);
-            font-size: 1rem;
-            color: var(--luxury-gold-dim);
-            letter-spacing: 0.3em;
-            margin-top: 1rem;
+            font-size: clamp(1.1rem, 3.5vw, 2rem);
+            color: var(--luxury-cream);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+            max-width: 60ch;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* ══ STATIC GANESHA MOTIF ══ */
+        .sloka-deva {
+            font-family: var(--font-serif);
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            color: var(--luxury-gold-dim);
+            letter-spacing: 0.3em;
+            margin-top: 0.8rem;
+            word-break: break-word;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            font-family: var(--font-sans);
+            color: rgba(249, 246, 240, 0.55);
+            font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+            letter-spacing: clamp(0.1em, 1vw, 0.35em);
+            border-top: 1px solid rgba(204, 165, 80, 0.2);
+            text-transform: uppercase;
+            word-break: break-word;
+        }
+
+        /* ══ WALKING GANESHA ══ */
         .ganesha-walk {
             position: fixed;
-            bottom: 20px;
+            bottom: 16px;
             left: -100px;
             z-index: 100;
-            font-size: 4rem;
+            font-size: 3rem;
             color: var(--luxury-gold);
-            opacity: 0.2;
-            /* Subtle watermark feel */
+            opacity: 0.18;
             animation: walk 120s linear infinite;
-            /* Very slow */
+            pointer-events: none;
         }
 
         @keyframes walk {
-            0% {
-                left: -100px;
-                transform: scaleX(1);
-            }
-
-            45% {
-                transform: scaleX(1);
-            }
-
-            50% {
-                left: 110%;
-                transform: scaleX(-1);
-            }
-
-            95% {
-                transform: scaleX(-1);
-            }
-
-            100% {
-                left: -100px;
-            }
-        }
-
-        /* ══ SETTINGS WIDGET ══ */
-        .settings-widget {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-        }
-
-        .settings-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(20, 5, 8, 0.6);
-            border: 1px solid var(--luxury-gold-dim);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--luxury-gold);
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: all 0.4s ease;
-            position: relative;
-            z-index: 1001;
-            /* Above inner */
-        }
-
-        .settings-widget:hover .settings-icon {
-            background: var(--luxury-gold);
-            color: var(--luxury-maroon);
-        }
-
-        .api-inner {
-            background: rgba(20, 5, 8, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            padding: 0.8rem 1.5rem 0.8rem 3rem;
-            /* Extra left padding to slide behind icon */
-            border-radius: 30px;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            border: 1px solid var(--luxury-gold-dim);
-
-            /* Hidden by default, slides out on hover */
-            opacity: 0;
-            transform: translateX(30px);
-            visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: absolute;
-            right: 20px;
-            /* Behind icon */
-        }
-
-        .settings-widget:hover .api-inner {
-            opacity: 1;
-            transform: translateX(0);
-            visibility: visible;
-        }
-
-        .api-lbl {
-            font-family: var(--font-sans);
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            color: var(--luxury-gold-dim);
-        }
-
-        .api-in {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid rgba(204, 165, 80, 0.3);
-            color: var(--luxury-cream);
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            outline: none;
-            width: 180px;
-            padding: 0.2rem;
-            transition: border-color 0.3s;
-        }
-
-        .api-in:focus {
-            border-bottom: 1px solid var(--luxury-gold);
-        }
-
-        .toggle-btn {
-            background: transparent;
-            color: var(--luxury-gold);
-            border: 1px solid var(--luxury-gold-dim);
-            padding: 0.4rem 1rem;
-            border-radius: 30px;
-            font-family: var(--font-sans);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-btn:hover {
-            background: var(--luxury-gold);
-            color: var(--luxury-maroon);
+            0%   { left: -100px; transform: scaleX(1); }
+            45%  { transform: scaleX(1); }
+            50%  { left: 110%; transform: scaleX(-1); }
+            95%  { transform: scaleX(-1); }
+            100% { left: -100px; }
         }
 
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-                filter: blur(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-                filter: blur(0);
-            }
+            from { opacity: 0; transform: translateY(-40px); filter: blur(10px); }
+            to   { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
-        /* ══════════════════════════════════════════════
-           RESPONSIVE — TABLET & MOBILE
-        ══════════════════════════════════════════════ */
+        /* ══ RESPONSIVE OVERRIDES ══ */
 
+        /* Tablet */
         @media (max-width: 768px) {
-
-            /* Hero */
-            .hero-eyebrow {
-                font-size: 0.75rem;
-                letter-spacing: 0.4em;
-            }
-
-            .hero-tagline {
-                font-size: 1.3rem;
-            }
-
-            /* Cards */
-            .sections {
-                padding: 4rem 1rem;
-            }
+            .sections { padding: 4rem 0.75rem; }
 
             .temple-card {
-                padding: 2rem 1.5rem;
-                margin-bottom: 4rem;
-                margin-left: 0;
-                margin-right: 0;
+                margin-bottom: 3rem;
                 outline-offset: -5px;
             }
 
-            /* Stack icon beside content → on top */
             .card-inner {
                 flex-direction: column;
-                gap: 1rem;
+                gap: 0.75rem;
             }
 
-            .card-icon {
-                font-size: 2.2rem;
-            }
+            .card-icon { font-size: 2rem; }
 
-            /* Make tabs scrollable horizontally */
-            .ep-row {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                white-space: nowrap;
-                width: 100%;
-                scrollbar-width: none;
-            }
+            .invoke-btn { width: 100%; text-align: center; }
 
-            .ep-row::-webkit-scrollbar {
-                display: none;
-            }
-
-            .ep-tab {
-                font-size: 0.75rem;
-                padding: 0.75rem 1rem;
-                letter-spacing: 0.1rem;
-            }
-
-            /* Button */
-            .invoke-btn {
-                width: 100%;
-                padding: 1rem;
-                letter-spacing: 0.2em;
-                font-size: 0.85rem;
-            }
-
-            /* Result area */
-            .result-date,
-            .main-date {
-                font-size: clamp(1.4rem, 5vw, 2.2rem);
-            }
-
-            .result-status {
-                font-size: 1.5rem;
-            }
-
-            .days-chip,
-            .days-orb {
-                padding: 1.2rem 2rem;
-            }
-
-            .days-num {
-                font-size: 2.8rem;
-            }
-
-            /* Year grid — single column */
-            .year-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            /* Footer */
-            .sloka-text {
-                font-size: 1.4rem;
-            }
-
-            footer {
-                font-size: 0.7rem;
-                letter-spacing: 0.2em;
-            }
-
-            /* Settings widget — smaller */
-            .settings-widget {
-                top: 12px;
-                right: 12px;
-            }
-
-            .settings-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
-
-            .api-inner {
-                flex-wrap: wrap;
-                gap: 0.5rem;
-                padding: 0.8rem 1rem 0.8rem 1rem;
-            }
-
-            .api-in {
-                width: 140px;
-            }
+            .year-grid { grid-template-columns: 1fr; }
         }
 
+        /* Mobile */
         @media (max-width: 480px) {
+            .sections { padding: 3rem 0.6rem; }
 
-            /* Tighter hero text */
-            .hero-title {
-                font-size: clamp(2.5rem, 14vw, 4rem);
-            }
-
-            .hero-tagline {
-                font-size: 1.1rem;
-            }
-
-            .hero-eyebrow {
-                letter-spacing: 0.25em;
-                font-size: 0.7rem;
-            }
-
-            /* Cards even tighter */
             .temple-card {
-                padding: 1.5rem 1rem;
-                margin-bottom: 3rem;
+                padding: 1.2rem 0.9rem;
+                margin-bottom: 2.5rem;
                 outline-offset: -4px;
             }
 
             .moon-divider {
-                font-size: 0.9rem;
-                letter-spacing: 0.3em;
-                margin-bottom: 2rem;
-            }
-
-            .ep-tab {
-                font-size: 0.7rem;
-                padding: 0.6rem 0.8rem;
-                letter-spacing: 0.05rem;
-            }
-
-            .invoke-btn {
-                font-size: 0.8rem;
+                font-size: 0.65rem;
                 letter-spacing: 0.15em;
-                padding: 0.9rem;
-            }
-
-            .btn-back {
-                font-size: 0.7rem;
-                padding: 0.6rem 1.2rem;
-                margin-bottom: 2rem;
-            }
-
-            .card-desc {
-                font-size: 1rem;
                 margin-bottom: 1.5rem;
             }
 
-            .main-date {
-                font-size: clamp(1.2rem, 5vw, 1.8rem);
+            .days-num { font-size: 2.2rem; }
+
+            .btn-back {
+                font-size: 0.68rem;
+                padding: 0.55rem 1rem;
+                margin-bottom: 1.8rem;
             }
 
-            .label-small {
-                font-size: 0.65rem;
-                letter-spacing: 0.2em;
+            /* Stack invoke button full width */
+            .invoke-btn {
+                width: 100%;
+                font-size: 0.75rem;
+                letter-spacing: 0.12em;
+                padding: 0.9rem 1rem;
             }
 
-            .days-num {
-                font-size: 2.2rem;
-            }
-
-            .oracle-title {
-                font-size: 1.8rem;
-                letter-spacing: 0.08em;
-            }
-
-            .footer-sloka {
-                padding: 3rem 1.2rem;
-            }
-
-            .sloka-text {
-                font-size: 1.1rem;
+            /* Settings panel stacks below icon on very small screens */
+            .api-inner {
+                right: 0;
+                top: 52px;
+                max-width: calc(100vw - 28px);
+                border-radius: 6px;
             }
         }
-    </style>
 
+        /* Tiny phones (320px) */
+        @media (max-width: 360px) {
+            .hero-eyebrow { letter-spacing: 0.15em; }
+            .temple-card { padding: 1rem 0.75rem; }
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- CANVAS COSMOS -->
-    <canvas id="cosmos" style="display:none"></canvas>
+    <div class="ganesha-walk">🐘</div>
 
     <div class="page">
 
-        <!-- ══════════ HERO ══════════ -->
+        <!-- ══ HERO ══ -->
         <section class="hero">
             <div class="hero-title-container">
                 <span class="hero-eyebrow">ॐ श्री गणेशाय नमः</span>
@@ -994,59 +807,54 @@
                 <span class="api-lbl">COSMIC ENDPOINT</span>
                 <input class="api-in" id="base-url" type="text" value="https://sankashti.onrender.com/"
                     placeholder="https://sankashti.onrender.com/" />
-                <button class="toggle-btn" onclick="toggleBase()">⇄ Local Temple</button>
+                <button class="toggle-btn" onclick="toggleBase()">⇄ Local</button>
             </div>
         </div>
 
-        <!-- ══════════ THE SACRED SECTIONS ══════════ -->
+        <!-- ══ SECTIONS ══ -->
         <div class="sections">
 
             <!-- ① SANKASHTI -->
-            <div class="sankashti-section temple-card-wrap">
+            <div class="temple-card">
+                <div class="card-inner">
+                    <div class="card-icon">🕉</div>
+                    <div class="card-content">
+                        <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
+                        <div class="ep-row">
+                            <button class="ep-tab active" onclick="selectSankEp('today', event)">Today</button>
+                            <button class="ep-tab" onclick="selectSankEp('next', event)">Next Sankashti</button>
+                            <button class="ep-tab" onclick="selectSankEp('year', event)">Yearly Cycle</button>
+                        </div>
 
+                        <div id="sank-year-param" style="display:none;" class="year-input-row">
+                            <input class="api-in" id="sank-year-in" type="number" value="2026" />
+                        </div>
 
-                <div class="temple-card sankashti-card">
-                    <div class="card-inner">
-                        <div class="card-icon">🕉</div>
-                        <div class="card-content">
-                            <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
-                            <div class="ep-row">
-                                <button class="ep-tab active" onclick="selectSankEp('today', event)">Today</button>
-                                <button class="ep-tab" onclick="selectSankEp('next', event)">Next Sankashti</button>
-                                <button class="ep-tab" onclick="selectSankEp('year', event)">Yearly Cycle</button>
+                        <div id="sank-idle" class="idle-state">
+                            <p class="card-desc">Consult the divine cycles of the moon to find the next day of Lord Ganesha's blessing.</p>
+                            <button class="invoke-btn" onclick="fetchSank()">Consult Sankashti</button>
+                        </div>
+
+                        <div id="sank-result-container" style="display:none;">
+                            <button class="btn-back" onclick="resetSank()">← Return</button>
+
+                            <div id="sank-result-today" class="res-sub">
+                                <h3 id="sank-today-status"></h3>
+                                <div id="sank-today-date" class="main-date"></div>
                             </div>
 
-                            <div id="sank-year-param" class="year-input-row" style="display:none; margin-top: 1.5rem;">
-                                <input class="api-in" id="sank-year-in" type="number" value="2026" />
+                            <div id="sank-result-next" class="res-sub">
+                                <div class="label-small">Target Alignment</div>
+                                <div id="sank-next-date" class="main-date"></div>
+                                <div class="days-orb">
+                                    <span id="sank-next-days-num" class="days-num"></span>
+                                    <span class="days-label">Days</span>
+                                </div>
+                                <p id="sank-next-about" class="about-text"></p>
                             </div>
 
-                            <div id="sank-idle" class="idle-state">
-                                <p class="card-desc">Consult the divine cycles of the moon to find the next day of Lord
-                                    Ganesha's blessing.</p>
-                                <button class="invoke-btn sank-btn" onclick="fetchSank()">Consult Sankashti</button>
-                            </div>
-
-                            <div id="sank-result-container" class="result-container" style="display:none;">
-                                <button class="btn-back" onclick="resetSank()">← Return</button>
-
-                                <div id="sank-result-today" class="res-sub">
-                                    <h3 id="sank-today-status"></h3>
-                                    <div id="sank-today-date" class="main-date"></div>
-                                </div>
-
-                                <div id="sank-result-next" class="res-sub">
-                                    <div class="label-small">Target Alignment</div>
-                                    <div id="sank-next-date" class="main-date"></div>
-                                    <div class="days-orb">
-                                        <span id="sank-next-days-num" class="days-num"></span>
-                                        <span class="days-label">Days</span>
-                                    </div>
-                                    <p id="sank-next-about" class="about-text"></p>
-                                </div>
-
-                                <div id="sank-result-year" class="res-sub">
-                                    <div id="sank-year-grid" class="year-grid"></div>
-                                </div>
+                            <div id="sank-result-year" class="res-sub">
+                                <div id="sank-year-grid" class="year-grid"></div>
                             </div>
                         </div>
                     </div>
@@ -1054,50 +862,47 @@
             </div>
 
             <!-- ② AMAVASYA -->
-            <div class="amavasya-section temple-card-wrap">
+            <div class="temple-card">
+                <div class="card-inner">
+                    <div class="card-icon">🌑</div>
+                    <div class="card-content">
+                        <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
+                        <div class="ep-row">
+                            <button class="ep-tab active" onclick="selectAmEp('today', event)">Today</button>
+                            <button class="ep-tab" onclick="selectAmEp('next', event)">Next Amavasya</button>
+                            <button class="ep-tab" onclick="selectAmEp('year', event)">Yearly Cycle</button>
+                        </div>
 
-                <div class="temple-card amavasya-card">
-                    <div class="card-inner">
-                        <div class="card-icon">🌑</div>
-                        <div class="card-content">
-                            <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
-                            <div class="ep-row">
-                                <button class="ep-tab active" onclick="selectAmEp('today', event)">Today</button>
-                                <button class="ep-tab" onclick="selectAmEp('next', event)">Next Amavasya</button>
-                                <button class="ep-tab" onclick="selectAmEp('year', event)">Yearly Cycle</button>
+                        <div id="am-year-param" style="display:none;" class="year-input-row">
+                            <input class="api-in" id="am-year-in" type="number" value="2026" />
+                        </div>
+
+                        <div id="am-idle" class="idle-state">
+                            <p class="card-desc">Cross the cosmic void to find the stillness of the new moon.</p>
+                            <button class="invoke-btn" onclick="fetchAm()">Consult Amavasya</button>
+                        </div>
+
+                        <div id="am-result-container" style="display:none;">
+                            <button class="btn-back" onclick="resetAm()">← Return</button>
+
+                            <div id="am-result-today" class="res-sub">
+                                <div id="am-today-emoji" style="font-size: 3rem; margin-bottom: 0.75rem;">🌑</div>
+                                <h3 id="am-today-status"></h3>
+                                <div id="am-today-date" class="main-date"></div>
                             </div>
 
-                            <div id="am-year-param" class="year-input-row" style="display:none; margin-top: 1.5rem;">
-                                <input class="api-in" id="am-year-in" type="number" value="2026" />
+                            <div id="am-result-next" class="res-sub">
+                                <div class="label-small">Target Alignment</div>
+                                <div id="am-next-date" class="main-date"></div>
+                                <div class="days-orb">
+                                    <span id="am-next-days-num" class="days-num"></span>
+                                    <span class="days-label">Days</span>
+                                </div>
+                                <p id="am-next-about" class="about-text"></p>
                             </div>
 
-                            <div id="am-idle" class="idle-state">
-                                <p class="card-desc">Cross the cosmic void to find the stillness of the new moon.</p>
-                                <button class="invoke-btn am-btn" onclick="fetchAm()">Consult Amavasya</button>
-                            </div>
-
-                            <div id="am-result-container" class="result-container" style="display:none;">
-                                <button class="btn-back" onclick="resetAm()">← Return</button>
-
-                                <div id="am-result-today" class="res-sub">
-                                    <div id="am-today-emoji" style="font-size: 4rem; margin-bottom: 1rem;">🌑</div>
-                                    <h3 id="am-today-status"></h3>
-                                    <div id="am-today-date" class="main-date"></div>
-                                </div>
-
-                                <div id="am-result-next" class="res-sub">
-                                    <div class="label-small">Target Alignment</div>
-                                    <div id="am-next-date" class="main-date"></div>
-                                    <div class="days-orb">
-                                        <span id="am-next-days-num" class="days-num"></span>
-                                        <span class="days-label">Days</span>
-                                    </div>
-                                    <p id="am-next-about" class="about-text"></p>
-                                </div>
-
-                                <div id="am-result-year" class="res-sub">
-                                    <div id="am-year-grid" class="year-grid"></div>
-                                </div>
+                            <div id="am-result-year" class="res-sub">
+                                <div id="am-year-grid" class="year-grid"></div>
                             </div>
                         </div>
                     </div>
@@ -1105,50 +910,46 @@
             </div>
 
             <!-- ③ PURNIMA -->
-            <div class="purnima-section temple-card-wrap">
+            <div class="temple-card">
+                <div class="card-inner">
+                    <div class="card-icon">🌕</div>
+                    <div class="card-content">
+                        <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
+                        <div class="ep-row">
+                            <button class="ep-tab active" onclick="selectPurEp('today', event)">Today</button>
+                            <button class="ep-tab" onclick="selectPurEp('next', event)">Next Purnima</button>
+                            <button class="ep-tab" onclick="selectPurEp('year', event)">Yearly Cycle</button>
+                        </div>
 
-                <div class="temple-card purnima-card">
-                    <div class="card-inner">
-                        <div class="card-icon">🌕</div>
-                        <div class="card-content">
-                            <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
-                            <div class="ep-row">
-                                <button class="ep-tab active" onclick="selectPurEp('today', event)">Today</button>
-                                <button class="ep-tab" onclick="selectPurEp('next', event)">Next Purnima</button>
-                                <button class="ep-tab" onclick="selectPurEp('year', event)">Yearly Cycle</button>
+                        <div id="pur-year-param" style="display:none;" class="year-input-row">
+                            <input class="api-in" id="pur-year-in" type="number" value="2026" />
+                        </div>
+
+                        <div id="pur-idle" class="idle-state">
+                            <p class="card-desc">Seek the full moon's brilliance and the light of complete alignment.</p>
+                            <button class="invoke-btn" onclick="fetchPur()">Consult Purnima</button>
+                        </div>
+
+                        <div id="pur-result-container" style="display:none;">
+                            <button class="btn-back" onclick="resetPur()">← Return</button>
+
+                            <div id="pur-result-today" class="res-sub">
+                                <h3 id="pur-today-status"></h3>
+                                <div id="pur-today-date" class="main-date"></div>
                             </div>
 
-                            <div id="pur-year-param" class="year-input-row" style="display:none; margin-top: 1.5rem;">
-                                <input class="api-in" id="pur-year-in" type="number" value="2026" />
+                            <div id="pur-result-next" class="res-sub">
+                                <div class="label-small">Target Alignment</div>
+                                <div id="pur-next-date" class="main-date"></div>
+                                <div class="days-orb">
+                                    <span id="pur-next-days-num" class="days-num"></span>
+                                    <span class="days-label">Days</span>
+                                </div>
+                                <p id="pur-next-about" class="about-text"></p>
                             </div>
 
-                            <div id="pur-idle" class="idle-state">
-                                <p class="card-desc">Seek the full moon's brilliance and the light of complete
-                                    alignment.</p>
-                                <button class="invoke-btn pur-btn" onclick="fetchPur()">Consult Purnima</button>
-                            </div>
-
-                            <div id="pur-result-container" class="result-container" style="display:none;">
-                                <button class="btn-back" onclick="resetPur()">← Return</button>
-
-                                <div id="pur-result-today" class="res-sub">
-                                    <h3 id="pur-today-status"></h3>
-                                    <div id="pur-today-date" class="main-date"></div>
-                                </div>
-
-                                <div id="pur-result-next" class="res-sub">
-                                    <div class="label-small">Target Alignment</div>
-                                    <div id="pur-next-date" class="main-date"></div>
-                                    <div class="days-orb">
-                                        <span id="pur-next-days-num" class="days-num"></span>
-                                        <span class="days-label">Days</span>
-                                    </div>
-                                    <p id="pur-next-about" class="about-text"></p>
-                                </div>
-
-                                <div id="pur-result-year" class="res-sub">
-                                    <div id="pur-year-grid" class="year-grid"></div>
-                                </div>
+                            <div id="pur-result-year" class="res-sub">
+                                <div id="pur-year-grid" class="year-grid"></div>
                             </div>
                         </div>
                     </div>
@@ -1159,15 +960,16 @@
 
         <div class="footer-sloka">
             <div class="sloka-orn">
-                <div class="ln"></div><span class="sym">✦</span>
+                <div class="ln"></div>
+                <span class="sym">✦</span>
                 <div class="ln"></div>
             </div>
-            <div class="sloka-text">"As the moon waxes and wanes through sacred tithis, so does the soul move through
-                birth and liberation."</div>
+            <div class="sloka-text">"As the moon waxes and wanes through sacred tithis, so does the soul move through birth and liberation."</div>
             <div class="sloka-deva">ॐ सोमाय नमः · चन्द्रमा मनसो जातः</div>
         </div>
 
         <footer>ॐ नमः शिवाय &nbsp;·&nbsp; चंद्र दर्शन &nbsp;·&nbsp; सर्वे भवन्तु सुखिनः</footer>
+
     </div><!-- .page -->
 
     <script>
@@ -1180,10 +982,10 @@
             const btn = document.querySelector('.toggle-btn');
             if (b.value.includes('render.com')) {
                 b.value = 'http://127.0.0.1:8000';
-                btn.textContent = '⇄ Local Temple';
+                btn.textContent = '⇄ Cloud';
             } else {
                 b.value = 'https://sankashti.onrender.com/';
-                btn.textContent = '⇄ Cloud Temple';
+                btn.textContent = '⇄ Local';
             }
         }
 
@@ -1195,8 +997,7 @@
         // 🔱 SANKASHTI
         function selectSankEp(ep, ev) {
             currentSankEp = ep;
-            const container = ev.target.closest('.ep-row');
-            container.querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
+            ev.target.closest('.ep-row').querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
             ev.target.classList.add('active');
             document.getElementById('sank-year-param').style.display = ep === 'year' ? 'block' : 'none';
             resetSank();
@@ -1206,50 +1007,44 @@
             const base = document.getElementById('base-url').value.replace(/\/$/, '');
             let url = `${base}/sankashti/${currentSankEp}`;
             if (currentSankEp === 'year') {
-                const y = document.getElementById('sank-year-in').value;
-                url = `${base}/sankashti/year/${y}`;
+                url = `${base}/sankashti/year/${document.getElementById('sank-year-in').value}`;
             }
             document.getElementById('sank-idle').style.display = 'none';
             document.getElementById('sank-result-container').style.display = 'block';
             try {
                 const res = await fetch(url);
-                const d = await res.json();
-                renderSank(d, currentSankEp);
+                renderSank(await res.json(), currentSankEp);
             } catch (e) { resetSank(); }
         }
 
         function renderSank(d, ep) {
-            ['today', 'next', 'year'].forEach(id => document.getElementById(`sank-result-${id}`).style.display = 'none');
+            ['today','next','year'].forEach(id => document.getElementById(`sank-result-${id}`).style.display = 'none');
             document.getElementById(`sank-result-${ep}`).style.display = 'block';
             if (ep === 'today') {
-                const isS = d.is_sankashti;
-                document.getElementById('sank-today-status').textContent = isS ? '🕉 Today is Sankashti Chaturthi' : 'Today is not Sankashti Chaturthi';
+                document.getElementById('sank-today-status').textContent = d.is_sankashti ? '🕉 Today is Sankashti Chaturthi' : 'Today is not Sankashti Chaturthi';
                 document.getElementById('sank-today-date').textContent = fmt(d.date);
             } else if (ep === 'next') {
                 document.getElementById('sank-next-date').textContent = fmt(d.date);
                 document.getElementById('sank-next-days-num').textContent = d.days_until;
                 document.getElementById('sank-next-about').textContent = d.about;
-            } else if (ep === 'year') {
-                const g = document.getElementById('sank-year-grid');
-                g.innerHTML = d.dates.map(x => `
+            } else {
+                document.getElementById('sank-year-grid').innerHTML = d.dates.map(x => `
                     <div class="year-card">
-                        <div style="color:var(--luxury-cream); font-family:'Cinzel',serif; font-size:1rem; font-weight:600; margin-bottom:0.5rem;">${fmt(x.date)}</div>
-                        <div style="color:var(--luxury-gold-dim); font-size:0.9rem; opacity:0.85;">${x.about}</div>
-                    </div>
-                `).join('');
+                        <div style="color:var(--luxury-cream);font-family:'Cinzel',serif;font-size:0.95rem;font-weight:600;margin-bottom:0.4rem;">${fmt(x.date)}</div>
+                        <div style="color:var(--luxury-gold-dim);font-size:0.85rem;opacity:0.85;line-height:1.5;">${x.about}</div>
+                    </div>`).join('');
             }
         }
 
         function resetSank() {
-            document.getElementById('sank-idle').style.display = 'block';
+            document.getElementById('sank-idle').style.display = 'flex';
             document.getElementById('sank-result-container').style.display = 'none';
         }
 
         // 🌑 AMAVASYA
         function selectAmEp(ep, ev) {
             currentAmEp = ep;
-            const container = ev.target.closest('.ep-row');
-            container.querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
+            ev.target.closest('.ep-row').querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
             ev.target.classList.add('active');
             document.getElementById('am-year-param').style.display = ep === 'year' ? 'block' : 'none';
             resetAm();
@@ -1259,51 +1054,45 @@
             const base = document.getElementById('base-url').value.replace(/\/$/, '');
             let url = `${base}/amavasya/${currentAmEp}`;
             if (currentAmEp === 'year') {
-                const y = document.getElementById('am-year-in').value;
-                url = `${base}/amavasya/year/${y}`;
+                url = `${base}/amavasya/year/${document.getElementById('am-year-in').value}`;
             }
             document.getElementById('am-idle').style.display = 'none';
             document.getElementById('am-result-container').style.display = 'block';
             try {
                 const res = await fetch(url);
-                const d = await res.json();
-                renderAm(d, currentAmEp);
+                renderAm(await res.json(), currentAmEp);
             } catch (e) { resetAm(); }
         }
 
         function renderAm(d, ep) {
-            ['today', 'next', 'year'].forEach(id => document.getElementById(`am-result-${id}`).style.display = 'none');
+            ['today','next','year'].forEach(id => document.getElementById(`am-result-${id}`).style.display = 'none');
             document.getElementById(`am-result-${ep}`).style.display = 'block';
             if (ep === 'today') {
-                const isA = d.is_amavasya;
-                document.getElementById('am-today-status').textContent = isA ? '🪔 Today is Amavasya' : 'Today is not Amavasya';
+                document.getElementById('am-today-status').textContent = d.is_amavasya ? '🪔 Today is Amavasya' : 'Today is not Amavasya';
                 document.getElementById('am-today-date').textContent = fmt(d.date);
-                document.getElementById('am-today-emoji').textContent = isA ? '🌑' : '🌘';
+                document.getElementById('am-today-emoji').textContent = d.is_amavasya ? '🌑' : '🌘';
             } else if (ep === 'next') {
                 document.getElementById('am-next-date').textContent = fmt(d.date);
                 document.getElementById('am-next-days-num').textContent = d.days_until;
                 document.getElementById('am-next-about').textContent = d.about;
-            } else if (ep === 'year') {
-                const g = document.getElementById('am-year-grid');
-                g.innerHTML = d.dates.map(x => `
+            } else {
+                document.getElementById('am-year-grid').innerHTML = d.dates.map(x => `
                     <div class="year-card">
-                        <div style="color:var(--luxury-cream); font-family:'Cinzel',serif; font-size:1rem; font-weight:600; margin-bottom:0.5rem;">${fmt(x.date)}</div>
-                        <div style="color:var(--luxury-gold-dim); font-size:0.9rem; opacity:0.85;">${x.about}</div>
-                    </div>
-                `).join('');
+                        <div style="color:var(--luxury-cream);font-family:'Cinzel',serif;font-size:0.95rem;font-weight:600;margin-bottom:0.4rem;">${fmt(x.date)}</div>
+                        <div style="color:var(--luxury-gold-dim);font-size:0.85rem;opacity:0.85;line-height:1.5;">${x.about}</div>
+                    </div>`).join('');
             }
         }
 
         function resetAm() {
-            document.getElementById('am-idle').style.display = 'block';
+            document.getElementById('am-idle').style.display = 'flex';
             document.getElementById('am-result-container').style.display = 'none';
         }
 
         // 🌕 PURNIMA
         function selectPurEp(ep, ev) {
             currentPurEp = ep;
-            const container = ev.target.closest('.ep-row');
-            container.querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
+            ev.target.closest('.ep-row').querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
             ev.target.classList.add('active');
             document.getElementById('pur-year-param').style.display = ep === 'year' ? 'block' : 'none';
             resetPur();
@@ -1313,46 +1102,39 @@
             const base = document.getElementById('base-url').value.replace(/\/$/, '');
             let url = `${base}/purnima/${currentPurEp}`;
             if (currentPurEp === 'year') {
-                const y = document.getElementById('pur-year-in').value;
-                url = `${base}/purnima/year/${y}`;
+                url = `${base}/purnima/year/${document.getElementById('pur-year-in').value}`;
             }
             document.getElementById('pur-idle').style.display = 'none';
             document.getElementById('pur-result-container').style.display = 'block';
             try {
                 const res = await fetch(url);
-                const d = await res.json();
-                renderPur(d, currentPurEp);
+                renderPur(await res.json(), currentPurEp);
             } catch (e) { resetPur(); }
         }
 
         function renderPur(d, ep) {
-            ['today', 'next', 'year'].forEach(id => document.getElementById(`pur-result-${id}`).style.display = 'none');
+            ['today','next','year'].forEach(id => document.getElementById(`pur-result-${id}`).style.display = 'none');
             document.getElementById(`pur-result-${ep}`).style.display = 'block';
             if (ep === 'today') {
-                const isP = d.is_purnima;
-                document.getElementById('pur-today-status').textContent = isP ? '🌕 Today is Purnima' : 'Today is not Purnima';
+                document.getElementById('pur-today-status').textContent = d.is_purnima ? '🌕 Today is Purnima' : 'Today is not Purnima';
                 document.getElementById('pur-today-date').textContent = fmt(d.date);
             } else if (ep === 'next') {
                 document.getElementById('pur-next-date').textContent = fmt(d.date);
                 document.getElementById('pur-next-days-num').textContent = d.days_until;
                 document.getElementById('pur-next-about').textContent = d.about;
-            } else if (ep === 'year') {
-                const g = document.getElementById('pur-year-grid');
-                g.innerHTML = (d.dates || []).map(x => `
+            } else {
+                document.getElementById('pur-year-grid').innerHTML = (d.dates || []).map(x => `
                     <div class="year-card">
-                        <div style="color:var(--luxury-cream); font-family:'Cinzel',serif; font-size:1rem; font-weight:600; margin-bottom:0.5rem;">${fmt(x.date)}</div>
-                        <div style="color:var(--luxury-gold-dim); font-size:0.9rem; opacity:0.85;">${x.about}</div>
-                    </div>
-                `).join('');
+                        <div style="color:var(--luxury-cream);font-family:'Cinzel',serif;font-size:0.95rem;font-weight:600;margin-bottom:0.4rem;">${fmt(x.date)}</div>
+                        <div style="color:var(--luxury-gold-dim);font-size:0.85rem;opacity:0.85;line-height:1.5;">${x.about}</div>
+                    </div>`).join('');
             }
         }
 
         function resetPur() {
-            document.getElementById('pur-idle').style.display = 'block';
+            document.getElementById('pur-idle').style.display = 'flex';
             document.getElementById('pur-result-container').style.display = 'none';
         }
     </script>
 </body>
-
 </html>
-```
