@@ -1444,7 +1444,7 @@
         const EK_PATHS = {
             today: () => `${EK_BASE}/today`,
             next:  () => `${EK_BASE}/next`,
-            year:  () => `${EK_BASE}/${document.getElementById('ek-year-in').value}`
+            year:  () => `${EK_BASE}/year/${document.getElementById('ek-year-in').value}`
         };
 
         // Cold start messages (Render free tier sleeps — first request ~15–20s)
