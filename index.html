@@ -1440,6 +1440,21 @@
         let currentEkEp = 'today';
         const EK_BASE = 'https://ekadashi-api.onrender.com';
 
+        // Endpoint map — correct paths confirmed from Network tab
+        const EK_PATHS = {
+            today: () => `${EK_BASE}/today`,
+            next:  () => `${EK_BASE}/next`,
+            year:  () => `${EK_BASE}/${document.getElementById('ek-year-in').value}`
+        };
+
+        // Cold start messages (Render free tier sleeps — first request ~15–20s)
+        const EK_LOADING_MSGS = [
+            'Seeking the eleventh tithi…',
+            'Waking the cosmic server…',
+            'Render free tier is meditating… 🧘',
+            'Almost there, patience is also a virtue…'
+        ];
+
         function selectEkEp(ep, ev) {
             currentEkEp = ep;
             ev.target.closest('.ep-row').querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
@@ -1449,44 +1464,77 @@
         }
 
         async function fetchEk() {
-            let url = `${EK_BASE}/ekadashi/${currentEkEp}`;
-            if (currentEkEp === 'year') {
-                url = `${EK_BASE}/ekadashi/year/${document.getElementById('ek-year-in').value}`;
-            }
+            const url = EK_PATHS[currentEkEp]();
             showLoading('ek', currentEkEp);
             if (currentEkEp === 'year') showYearSkeleton('ek-year-grid');
+
+            // Cycle through messages every 4s to reassure user during cold start
+            let msgIdx = 0;
+            const msgEl = document.getElementById('ek-loading-msg');
+            const cycleMsg = setInterval(() => {
+                msgIdx = (msgIdx + 1) % EK_LOADING_MSGS.length;
+                if (msgEl) msgEl.textContent = EK_LOADING_MSGS[msgIdx];
+            }, 4000);
+
             try {
                 const res = await fetch(url);
+                clearInterval(cycleMsg);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const d = await res.json();
+                console.log('[Ekadashi API response]', d);
                 hideLoading('ek');
                 document.getElementById('ek-result-container').style.display = 'block';
                 renderEk(d, currentEkEp);
             } catch (e) {
+                clearInterval(cycleMsg);
                 hideLoading('ek');
-                resetEk();
+                showEkError(`Could not reach API. (${e.message})`);
             }
+        }
+
+        function showEkError(msg) {
+            document.getElementById('ek-idle').style.display = 'none';
+            document.getElementById('ek-result-container').style.display = 'block';
+            ['today','next','year'].forEach(id => document.getElementById(`ek-result-${id}`).style.display = 'none');
+            document.getElementById('ek-result-today').style.display = 'block';
+            document.getElementById('ek-today-status').textContent = '⚠️ ' + msg;
+            document.getElementById('ek-today-status').style.color = 'var(--luxury-gold)';
+            document.getElementById('ek-today-name').textContent = 'Open browser DevTools → Console to see exact API response.';
+            document.getElementById('ek-today-date').textContent = '';
         }
 
         function renderEk(d, ep) {
             ['today','next','year'].forEach(id => document.getElementById(`ek-result-${id}`).style.display = 'none');
             document.getElementById(`ek-result-${ep}`).style.display = 'block';
+
             if (ep === 'today') {
-                const isE = d.is_ekadashi;
+                // Handle various possible field names from API
+                const isE = d.is_ekadashi ?? d.is_today ?? d.ekadashi ?? false;
+                const name = d.name ?? d.ekadashi_name ?? d.title ?? '';
+                const date = d.date ?? d.today ?? '';
                 document.getElementById('ek-today-status').textContent = isE ? '🪔 Today is Ekadashi' : 'Today is not Ekadashi';
-                document.getElementById('ek-today-name').textContent = d.name || '';
-                document.getElementById('ek-today-date').textContent = fmt(d.date);
+                document.getElementById('ek-today-name').textContent = name;
+                document.getElementById('ek-today-date').textContent = fmt(date);
+
             } else if (ep === 'next') {
-                document.getElementById('ek-next-name').textContent = d.name || '';
-                document.getElementById('ek-next-date').textContent = fmt(d.date);
-                document.getElementById('ek-next-days-num').textContent = d.days_until;
-                document.getElementById('ek-next-about').textContent = d.about || '';
+                const name = d.name ?? d.ekadashi_name ?? d.title ?? '';
+                const date = d.date ?? d.next_date ?? '';
+                const days = d.days_until ?? d.days ?? d.days_remaining ?? '';
+                const about = d.about ?? d.description ?? d.significance ?? '';
+                document.getElementById('ek-next-name').textContent = name;
+                document.getElementById('ek-next-date').textContent = fmt(date);
+                document.getElementById('ek-next-days-num').textContent = days;
+                document.getElementById('ek-next-about').textContent = about;
+
             } else {
-                document.getElementById('ek-year-grid').innerHTML = (d.dates || []).map(x => `
+                // year — handle both {dates:[]} and array response directly
+                const list = Array.isArray(d) ? d : (d.dates ?? d.ekadashis ?? d.data ?? []);
+                document.getElementById('ek-year-grid').innerHTML = list.map(x => `
                     <div class="year-card">
-                        <div style="color:var(--luxury-gold);font-family:var(--font-serif);font-size:0.9rem;font-style:italic;margin-bottom:0.2rem;">${x.name || ''}</div>
-                        <div style="color:var(--luxury-cream);font-family:'Cinzel',serif;font-size:0.92rem;font-weight:600;margin-bottom:0.4rem;">${fmt(x.date)}</div>
-                        <div style="color:var(--luxury-gold-dim);font-size:0.82rem;opacity:0.85;line-height:1.5;">${x.about || ''}</div>
-                    </div>`).join('');
+                        <div style="color:var(--luxury-gold);font-family:var(--font-serif);font-size:0.9rem;font-style:italic;margin-bottom:0.2rem;">${x.name ?? x.ekadashi_name ?? x.title ?? ''}</div>
+                        <div style="color:var(--luxury-cream);font-family:'Cinzel',serif;font-size:0.92rem;font-weight:600;margin-bottom:0.4rem;">${fmt(x.date ?? x.ekadashi_date ?? '')}</div>
+                        <div style="color:var(--luxury-gold-dim);font-size:0.82rem;opacity:0.85;line-height:1.5;">${x.about ?? x.description ?? x.significance ?? ''}</div>
+                    </div>`).join('') || '<p class="card-desc">No data returned for this year.</p>';
             }
         }
 
