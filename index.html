@@ -1237,8 +1237,16 @@
         }
 
         function fmt(dStr) {
-            const op = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dStr).toLocaleDateString('en-IN', op);
+            if (!dStr) return '';
+            // Split manually to avoid UTC-midnight → local timezone date shift
+            // e.g. "2026-03-13" parsed as UTC would show Mar 12 in IST (UTC+5:30)
+            const parts = dStr.split('-');
+            if (parts.length !== 3) return dStr;
+            const [y, m, d] = parts.map(Number);
+            const date = new Date(y, m - 1, d); // local time, no UTC shift
+            return date.toLocaleDateString('en-IN', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            });
         }
 
         /* ── Generic show/hide helpers ── */
