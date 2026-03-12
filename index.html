@@ -777,6 +777,157 @@
             .hero-eyebrow { letter-spacing: 0.15em; }
             .temple-card { padding: 1rem 0.75rem; }
         }
+
+        /* ══ LOADING STATE ══ */
+        .loading-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .loading-state.visible { display: flex; }
+
+        /* Rotating Om ring */
+        .om-spinner {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+        }
+
+        .om-spinner-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: var(--luxury-gold);
+            border-right-color: rgba(204, 165, 80, 0.3);
+            animation: spinRing 1.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        }
+
+        .om-spinner-ring.inner {
+            inset: 10px;
+            border-top-color: transparent;
+            border-bottom-color: var(--luxury-gold-dim);
+            animation: spinRing 1.8s linear infinite reverse;
+        }
+
+        .om-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--luxury-gold);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes spinRing {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: scale(0.95); }
+            50%       { opacity: 1;   transform: scale(1.05); }
+        }
+
+        /* Shimmer dots */
+        .loading-dots {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .loading-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--luxury-gold);
+            animation: dotBounce 1.4s ease-in-out infinite;
+        }
+
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dotBounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40%            { transform: scale(1.1); opacity: 1; }
+        }
+
+        .loading-msg {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+            color: rgba(249, 246, 240, 0.6);
+            letter-spacing: 0.05em;
+        }
+
+        /* Shimmer skeleton for year grid */
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+            gap: 1.2rem;
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .skeleton-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(204, 165, 80, 0.15);
+            padding: 1.5rem;
+            border-radius: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skeleton-line {
+            height: 14px;
+            border-radius: 2px;
+            background: rgba(204, 165, 80, 0.1);
+            margin-bottom: 0.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skeleton-line.short { width: 55%; }
+        .skeleton-line.long  { width: 85%; }
+        .skeleton-line.mid   { width: 70%; }
+
+        .skeleton-line::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(204, 165, 80, 0.25) 50%, transparent 100%);
+            animation: shimmer 1.8s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%   { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        /* Result fade-in */
+        .res-sub {
+            animation: fadeUp 0.5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Invoke button loading state */
+        .invoke-btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+            letter-spacing: 0.3em;
+        }
     </style>
 </head>
 
@@ -832,7 +983,17 @@
 
                         <div id="sank-idle" class="idle-state">
                             <p class="card-desc">Consult the divine cycles of the moon to find the next day of Lord Ganesha's blessing.</p>
-                            <button class="invoke-btn" onclick="fetchSank()">Consult Sankashti</button>
+                            <button class="invoke-btn" id="sank-btn" onclick="fetchSank()">Consult Sankashti</button>
+                        </div>
+
+                        <div id="sank-loading" class="loading-state">
+                            <div class="om-spinner">
+                                <div class="om-spinner-ring"></div>
+                                <div class="om-spinner-ring inner"></div>
+                                <div class="om-center">ॐ</div>
+                            </div>
+                            <div class="loading-dots"><span></span><span></span><span></span></div>
+                            <p class="loading-msg" id="sank-loading-msg">Consulting the cosmic calendar…</p>
                         </div>
 
                         <div id="sank-result-container" style="display:none;">
@@ -879,7 +1040,17 @@
 
                         <div id="am-idle" class="idle-state">
                             <p class="card-desc">Cross the cosmic void to find the stillness of the new moon.</p>
-                            <button class="invoke-btn" onclick="fetchAm()">Consult Amavasya</button>
+                            <button class="invoke-btn" id="am-btn" onclick="fetchAm()">Consult Amavasya</button>
+                        </div>
+
+                        <div id="am-loading" class="loading-state">
+                            <div class="om-spinner">
+                                <div class="om-spinner-ring"></div>
+                                <div class="om-spinner-ring inner"></div>
+                                <div class="om-center">🌑</div>
+                            </div>
+                            <div class="loading-dots"><span></span><span></span><span></span></div>
+                            <p class="loading-msg" id="am-loading-msg">Gazing into the new moon's void…</p>
                         </div>
 
                         <div id="am-result-container" style="display:none;">
@@ -927,7 +1098,17 @@
 
                         <div id="pur-idle" class="idle-state">
                             <p class="card-desc">Seek the full moon's brilliance and the light of complete alignment.</p>
-                            <button class="invoke-btn" onclick="fetchPur()">Consult Purnima</button>
+                            <button class="invoke-btn" id="pur-btn" onclick="fetchPur()">Consult Purnima</button>
+                        </div>
+
+                        <div id="pur-loading" class="loading-state">
+                            <div class="om-spinner">
+                                <div class="om-spinner-ring"></div>
+                                <div class="om-spinner-ring inner"></div>
+                                <div class="om-center">🌕</div>
+                            </div>
+                            <div class="loading-dots"><span></span><span></span><span></span></div>
+                            <p class="loading-msg" id="pur-loading-msg">Awaiting the full moon's revelation…</p>
                         </div>
 
                         <div id="pur-result-container" style="display:none;">
@@ -956,6 +1137,65 @@
                 </div>
             </div>
 
+            <!-- ④ EKADASHI -->
+            <div class="temple-card">
+                <div class="card-inner">
+                    <div class="card-icon">🪔</div>
+                    <div class="card-content">
+                        <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
+                        <div class="ep-row">
+                            <button class="ep-tab active" onclick="selectEkEp('today', event)">Today</button>
+                            <button class="ep-tab" onclick="selectEkEp('next', event)">Next Ekadashi</button>
+                            <button class="ep-tab" onclick="selectEkEp('year', event)">Yearly Cycle</button>
+                        </div>
+
+                        <div id="ek-year-param" style="display:none;" class="year-input-row">
+                            <input class="api-in" id="ek-year-in" type="number" value="2026" />
+                        </div>
+
+                        <div id="ek-idle" class="idle-state">
+                            <p class="card-desc">Honour the eleventh tithi — sacred to Lord Vishnu, a day of fasting, devotion, and inner purification.</p>
+                            <button class="invoke-btn" id="ek-btn" onclick="fetchEk()">Consult Ekadashi</button>
+                        </div>
+
+                        <div id="ek-loading" class="loading-state">
+                            <div class="om-spinner">
+                                <div class="om-spinner-ring"></div>
+                                <div class="om-spinner-ring inner"></div>
+                                <div class="om-center">🪔</div>
+                            </div>
+                            <div class="loading-dots"><span></span><span></span><span></span></div>
+                            <p class="loading-msg" id="ek-loading-msg">Seeking the eleventh tithi…</p>
+                        </div>
+
+                        <div id="ek-result-container" style="display:none;">
+                            <button class="btn-back" onclick="resetEk()">← Return</button>
+
+                            <div id="ek-result-today" class="res-sub">
+                                <h3 id="ek-today-status"></h3>
+                                <div id="ek-today-name" style="color:var(--luxury-gold);font-family:var(--font-serif);font-size:clamp(1rem,3vw,1.4rem);font-style:italic;margin:0.4rem 0 0.2rem;"></div>
+                                <div id="ek-today-date" class="main-date"></div>
+                            </div>
+
+                            <div id="ek-result-next" class="res-sub">
+                                <div class="label-small">Next Sacred Eleventh</div>
+                                <div id="ek-next-name" style="color:var(--luxury-gold);font-family:var(--font-serif);font-size:clamp(1rem,3vw,1.4rem);font-style:italic;margin-bottom:0.3rem;"></div>
+                                <div id="ek-next-date" class="main-date"></div>
+                                <div class="days-orb">
+                                    <span id="ek-next-days-num" class="days-num"></span>
+                                    <span class="days-label">Days</span>
+                                </div>
+                                <p id="ek-next-about" class="about-text"></p>
+                            </div>
+
+                            <div id="ek-result-year" class="res-sub">
+                                <div id="ek-year-grid" class="year-grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div><!-- /sections -->
 
         <div class="footer-sloka">
@@ -977,6 +1217,13 @@
         let currentAmEp = 'today';
         let currentPurEp = 'today';
 
+        // Loading messages per endpoint type
+        const loadMsgs = {
+            today: 'Reading today\'s tithi alignment…',
+            next:  'Charting the next sacred day…',
+            year:  'Mapping the full year\'s cycle…'
+        };
+
         function toggleBase() {
             const b = document.getElementById('base-url');
             const btn = document.querySelector('.toggle-btn');
@@ -994,6 +1241,31 @@
             return new Date(dStr).toLocaleDateString('en-IN', op);
         }
 
+        /* ── Generic show/hide helpers ── */
+        function showLoading(prefix, ep) {
+            document.getElementById(`${prefix}-idle`).style.display = 'none';
+            document.getElementById(`${prefix}-result-container`).style.display = 'none';
+            const loader = document.getElementById(`${prefix}-loading`);
+            loader.classList.add('visible');
+            const msgEl = document.getElementById(`${prefix}-loading-msg`);
+            if (msgEl) msgEl.textContent = loadMsgs[ep] || 'Consulting the cosmos…';
+        }
+
+        function hideLoading(prefix) {
+            document.getElementById(`${prefix}-loading`).classList.remove('visible');
+        }
+
+        /* ── Year skeleton helper ── */
+        function showYearSkeleton(gridId) {
+            const g = document.getElementById(gridId);
+            g.innerHTML = Array(6).fill(0).map(() => `
+                <div class="skeleton-card">
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-line long"></div>
+                    <div class="skeleton-line mid"></div>
+                </div>`).join('');
+        }
+
         // 🔱 SANKASHTI
         function selectSankEp(ep, ev) {
             currentSankEp = ep;
@@ -1009,12 +1281,18 @@
             if (currentSankEp === 'year') {
                 url = `${base}/sankashti/year/${document.getElementById('sank-year-in').value}`;
             }
-            document.getElementById('sank-idle').style.display = 'none';
-            document.getElementById('sank-result-container').style.display = 'block';
+            showLoading('sank', currentSankEp);
+            if (currentSankEp === 'year') showYearSkeleton('sank-year-grid');
             try {
                 const res = await fetch(url);
-                renderSank(await res.json(), currentSankEp);
-            } catch (e) { resetSank(); }
+                const d = await res.json();
+                hideLoading('sank');
+                document.getElementById('sank-result-container').style.display = 'block';
+                renderSank(d, currentSankEp);
+            } catch (e) {
+                hideLoading('sank');
+                resetSank();
+            }
         }
 
         function renderSank(d, ep) {
@@ -1037,6 +1315,7 @@
         }
 
         function resetSank() {
+            hideLoading('sank');
             document.getElementById('sank-idle').style.display = 'flex';
             document.getElementById('sank-result-container').style.display = 'none';
         }
@@ -1056,12 +1335,18 @@
             if (currentAmEp === 'year') {
                 url = `${base}/amavasya/year/${document.getElementById('am-year-in').value}`;
             }
-            document.getElementById('am-idle').style.display = 'none';
-            document.getElementById('am-result-container').style.display = 'block';
+            showLoading('am', currentAmEp);
+            if (currentAmEp === 'year') showYearSkeleton('am-year-grid');
             try {
                 const res = await fetch(url);
-                renderAm(await res.json(), currentAmEp);
-            } catch (e) { resetAm(); }
+                const d = await res.json();
+                hideLoading('am');
+                document.getElementById('am-result-container').style.display = 'block';
+                renderAm(d, currentAmEp);
+            } catch (e) {
+                hideLoading('am');
+                resetAm();
+            }
         }
 
         function renderAm(d, ep) {
@@ -1085,6 +1370,7 @@
         }
 
         function resetAm() {
+            hideLoading('am');
             document.getElementById('am-idle').style.display = 'flex';
             document.getElementById('am-result-container').style.display = 'none';
         }
@@ -1104,12 +1390,18 @@
             if (currentPurEp === 'year') {
                 url = `${base}/purnima/year/${document.getElementById('pur-year-in').value}`;
             }
-            document.getElementById('pur-idle').style.display = 'none';
-            document.getElementById('pur-result-container').style.display = 'block';
+            showLoading('pur', currentPurEp);
+            if (currentPurEp === 'year') showYearSkeleton('pur-year-grid');
             try {
                 const res = await fetch(url);
-                renderPur(await res.json(), currentPurEp);
-            } catch (e) { resetPur(); }
+                const d = await res.json();
+                hideLoading('pur');
+                document.getElementById('pur-result-container').style.display = 'block';
+                renderPur(d, currentPurEp);
+            } catch (e) {
+                hideLoading('pur');
+                resetPur();
+            }
         }
 
         function renderPur(d, ep) {
@@ -1132,8 +1424,68 @@
         }
 
         function resetPur() {
+            hideLoading('pur');
             document.getElementById('pur-idle').style.display = 'flex';
             document.getElementById('pur-result-container').style.display = 'none';
+        }
+        // 🪔 EKADASHI
+        let currentEkEp = 'today';
+        const EK_BASE = 'https://ekadashi-api.onrender.com';
+
+        function selectEkEp(ep, ev) {
+            currentEkEp = ep;
+            ev.target.closest('.ep-row').querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
+            ev.target.classList.add('active');
+            document.getElementById('ek-year-param').style.display = ep === 'year' ? 'block' : 'none';
+            resetEk();
+        }
+
+        async function fetchEk() {
+            let url = `${EK_BASE}/ekadashi/${currentEkEp}`;
+            if (currentEkEp === 'year') {
+                url = `${EK_BASE}/ekadashi/year/${document.getElementById('ek-year-in').value}`;
+            }
+            showLoading('ek', currentEkEp);
+            if (currentEkEp === 'year') showYearSkeleton('ek-year-grid');
+            try {
+                const res = await fetch(url);
+                const d = await res.json();
+                hideLoading('ek');
+                document.getElementById('ek-result-container').style.display = 'block';
+                renderEk(d, currentEkEp);
+            } catch (e) {
+                hideLoading('ek');
+                resetEk();
+            }
+        }
+
+        function renderEk(d, ep) {
+            ['today','next','year'].forEach(id => document.getElementById(`ek-result-${id}`).style.display = 'none');
+            document.getElementById(`ek-result-${ep}`).style.display = 'block';
+            if (ep === 'today') {
+                const isE = d.is_ekadashi;
+                document.getElementById('ek-today-status').textContent = isE ? '🪔 Today is Ekadashi' : 'Today is not Ekadashi';
+                document.getElementById('ek-today-name').textContent = d.name || '';
+                document.getElementById('ek-today-date').textContent = fmt(d.date);
+            } else if (ep === 'next') {
+                document.getElementById('ek-next-name').textContent = d.name || '';
+                document.getElementById('ek-next-date').textContent = fmt(d.date);
+                document.getElementById('ek-next-days-num').textContent = d.days_until;
+                document.getElementById('ek-next-about').textContent = d.about || '';
+            } else {
+                document.getElementById('ek-year-grid').innerHTML = (d.dates || []).map(x => `
+                    <div class="year-card">
+                        <div style="color:var(--luxury-gold);font-family:var(--font-serif);font-size:0.9rem;font-style:italic;margin-bottom:0.2rem;">${x.name || ''}</div>
+                        <div style="color:var(--luxury-cream);font-family:'Cinzel',serif;font-size:0.92rem;font-weight:600;margin-bottom:0.4rem;">${fmt(x.date)}</div>
+                        <div style="color:var(--luxury-gold-dim);font-size:0.82rem;opacity:0.85;line-height:1.5;">${x.about || ''}</div>
+                    </div>`).join('');
+            }
+        }
+
+        function resetEk() {
+            hideLoading('ek');
+            document.getElementById('ek-idle').style.display = 'flex';
+            document.getElementById('ek-result-container').style.display = 'none';
         }
     </script>
 </body>
