@@ -46,6 +46,19 @@ Each Tithi corresponds to **12° difference between Moon and Sun**.
 
 ```
 Angle = (Moon Longitude − Sun Longitude) % 360
+# Sankashti Chaturthi API
+
+A high-performance API providing accurate dates and timings for Sankashti Chaturthi.
+
+## 🚀 Features
+- Accurate fasting dates for the current year.
+- Easy-to-use JSON format.
+- Lightweight and fast response times.
+
+## 🛠 Usage
+Provide a simple example request:
+```bash
+curl [https://your-api-url.com/api/sankashti](https://your-api-url.com/api/sankashti)
 ```
 
 ```
