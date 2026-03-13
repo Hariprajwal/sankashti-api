@@ -30,7 +30,6 @@
 
         html {
             scroll-behavior: smooth;
-            /* Prevent horizontal scroll globally */
             overflow-x: hidden;
         }
 
@@ -39,12 +38,10 @@
             background-image: var(--overlay-gradient), url('ganesha_hero.png');
             background-size: cover;
             background-position: center top;
-            /* Removed background-attachment:fixed — broken on iOS Safari */
             background-attachment: scroll;
             color: var(--luxury-cream);
             font-family: var(--font-sans);
             font-size: 1rem;
-            /* Slightly reduced base for mobile harmony */
             overflow-x: hidden;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
@@ -61,7 +58,6 @@
         /* ══ HERO ══ */
         .hero {
             min-height: 100svh;
-            /* svh handles mobile chrome bar properly */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -145,7 +141,6 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 6rem 1rem;
-            /* 1rem min horizontal padding to prevent edge bleed */
             position: relative;
             z-index: 30;
         }
@@ -158,19 +153,15 @@
             border: 2px solid var(--luxury-gold-dim);
             outline: 1px solid var(--luxury-gold);
             outline-offset: -8px;
-            /* Reduced from -10 to prevent outline clipping on mobile */
             border-radius: 0;
             padding: clamp(1.5rem, 5vw, 5rem);
             margin-bottom: 5rem;
-            /* Removed negative margins — caused horizontal overflow */
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(204, 165, 80, 0.04);
             position: relative;
             z-index: 10;
             width: 100%;
-            /* Never exceed parent */
             max-width: 100%;
             overflow: hidden;
-            /* Clip any child overflow */
         }
 
         .temple-card::before {
@@ -211,33 +202,43 @@
         .card-content {
             flex: 1;
             min-width: 0;
-            /* Critical: prevents flex child from overflowing */
             overflow: hidden;
             width: 100%;
         }
 
-        /* ══ ORACLE HEADER ══ */
-        .oracle-header {
+        /* ══ SECTION TITLE (NEW — makes names visible) ══ */
+        .section-title-row {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
+            gap: 1rem;
+            margin-bottom: 1.6rem;
             flex-wrap: wrap;
         }
 
-        .oracle-icon {
-            font-size: 2.8rem;
-            color: var(--luxury-gold);
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        .section-name {
+            font-family: var(--font-head);
+            font-size: clamp(1.6rem, 5vw, 2.8rem);
+            font-weight: 600;
+            color: var(--luxury-cream);
+            letter-spacing: 0.12em;
+            text-shadow: 0 4px 16px rgba(0,0,0,0.7);
+            line-height: 1;
         }
 
-        .oracle-title {
-            font-family: var(--font-head);
-            font-size: clamp(1.5rem, 5vw, 2.8rem);
-            color: var(--luxury-cream);
-            letter-spacing: 0.1em;
-            font-weight: 400;
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+        .section-subtitle {
+            font-family: var(--font-serif);
+            font-size: clamp(0.85rem, 2.2vw, 1.1rem);
+            color: var(--luxury-gold);
+            font-style: italic;
+            opacity: 0.85;
+            letter-spacing: 0.05em;
+        }
+
+        .section-divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(204,165,80,0.5), transparent);
+            min-width: 20px;
         }
 
         /* ══ MOON DIVIDER ══ */
@@ -251,7 +252,6 @@
             opacity: 0.7;
             position: relative;
             overflow: hidden;
-            /* Prevent emoji row overflow */
         }
 
         .moon-divider::before,
@@ -276,7 +276,6 @@
             gap: 0;
             margin-bottom: 2.5rem;
             width: 100%;
-            /* Full width, not fit-content */
             border: none;
             border-bottom: 1px solid rgba(204, 165, 80, 0.3);
             overflow-x: auto;
@@ -338,7 +337,6 @@
             letter-spacing: clamp(0.15em, 1vw, 0.4em);
             transition: all 0.4s ease;
             max-width: 100%;
-            /* Never wider than card */
             width: fit-content;
         }
 
@@ -385,7 +383,6 @@
             letter-spacing: 0.04em;
             margin: 0.5rem 0 1.2rem;
             word-break: break-word;
-            /* Long dates wrap, not overflow */
         }
 
         h3 {
@@ -465,7 +462,6 @@
         .year-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-            /* min() prevents overflow */
             gap: 1.2rem;
             margin-top: 2rem;
             width: 100%;
@@ -573,10 +569,8 @@
             transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: absolute;
             right: 52px;
-            /* Just to left of icon */
             top: 0;
             max-width: calc(100vw - 80px);
-            /* Never overflow viewport */
         }
 
         .settings-widget:hover .api-inner {
@@ -593,7 +587,6 @@
             white-space: nowrap;
         }
 
-        /* Wider api-in inside settings */
         .api-inner .api-in {
             width: clamp(120px, 30vw, 200px);
         }
@@ -710,8 +703,6 @@
         }
 
         /* ══ RESPONSIVE OVERRIDES ══ */
-
-        /* Tablet */
         @media (max-width: 768px) {
             .sections { padding: 4rem 0.75rem; }
 
@@ -732,7 +723,6 @@
             .year-grid { grid-template-columns: 1fr; }
         }
 
-        /* Mobile */
         @media (max-width: 480px) {
             .sections { padding: 3rem 0.6rem; }
 
@@ -756,7 +746,6 @@
                 margin-bottom: 1.8rem;
             }
 
-            /* Stack invoke button full width */
             .invoke-btn {
                 width: 100%;
                 font-size: 0.75rem;
@@ -764,16 +753,18 @@
                 padding: 0.9rem 1rem;
             }
 
-            /* Settings panel stacks below icon on very small screens */
             .api-inner {
                 right: 0;
                 top: 52px;
                 max-width: calc(100vw - 28px);
                 border-radius: 6px;
             }
+
+            .section-name {
+                font-size: clamp(1.3rem, 6vw, 2rem);
+            }
         }
 
-        /* Tiny phones (320px) */
         @media (max-width: 360px) {
             .hero-eyebrow { letter-spacing: 0.15em; }
             .temple-card { padding: 1rem 0.75rem; }
@@ -792,7 +783,6 @@
 
         .loading-state.visible { display: flex; }
 
-        /* Rotating Om ring */
         .om-spinner {
             position: relative;
             width: 80px;
@@ -838,7 +828,6 @@
             50%       { opacity: 1;   transform: scale(1.05); }
         }
 
-        /* Shimmer dots */
         .loading-dots {
             display: flex;
             gap: 0.6rem;
@@ -869,7 +858,6 @@
             letter-spacing: 0.05em;
         }
 
-        /* Shimmer skeleton for year grid */
         .skeleton-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
@@ -913,7 +901,6 @@
             100% { transform: translateX(200%); }
         }
 
-        /* Result fade-in */
         .res-sub {
             animation: fadeUp 0.5s ease both;
         }
@@ -923,7 +910,6 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Invoke button loading state */
         .invoke-btn.loading {
             pointer-events: none;
             opacity: 0.7;
@@ -971,6 +957,16 @@
                 <div class="card-inner">
                     <div class="card-icon">🕉</div>
                     <div class="card-content">
+
+                        <!-- VISIBLE TITLE -->
+                        <div class="section-title-row">
+                            <div>
+                                <div class="section-name">SANKASHTI</div>
+                                <div class="section-subtitle">Chaturthi · Fourth Tithi of Krishna Paksha</div>
+                            </div>
+                            <div class="section-divider-line"></div>
+                        </div>
+
                         <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
                         <div class="ep-row">
                             <button class="ep-tab active" onclick="selectSankEp('today', event)">Today</button>
@@ -1028,6 +1024,16 @@
                 <div class="card-inner">
                     <div class="card-icon">🌑</div>
                     <div class="card-content">
+
+                        <!-- VISIBLE TITLE -->
+                        <div class="section-title-row">
+                            <div>
+                                <div class="section-name">AMAVASYA</div>
+                                <div class="section-subtitle">New Moon · The Night of Stillness</div>
+                            </div>
+                            <div class="section-divider-line"></div>
+                        </div>
+
                         <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
                         <div class="ep-row">
                             <button class="ep-tab active" onclick="selectAmEp('today', event)">Today</button>
@@ -1086,6 +1092,16 @@
                 <div class="card-inner">
                     <div class="card-icon">🌕</div>
                     <div class="card-content">
+
+                        <!-- VISIBLE TITLE -->
+                        <div class="section-title-row">
+                            <div>
+                                <div class="section-name">PURNIMA</div>
+                                <div class="section-subtitle">Full Moon · The Night of Complete Illumination</div>
+                            </div>
+                            <div class="section-divider-line"></div>
+                        </div>
+
                         <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
                         <div class="ep-row">
                             <button class="ep-tab active" onclick="selectPurEp('today', event)">Today</button>
@@ -1143,6 +1159,16 @@
                 <div class="card-inner">
                     <div class="card-icon">🪔</div>
                     <div class="card-content">
+
+                        <!-- VISIBLE TITLE -->
+                        <div class="section-title-row">
+                            <div>
+                                <div class="section-name">EKADASHI</div>
+                                <div class="section-subtitle">Eleventh Tithi · Sacred to Lord Vishnu</div>
+                            </div>
+                            <div class="section-divider-line"></div>
+                        </div>
+
                         <div class="moon-divider">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
                         <div class="ep-row">
                             <button class="ep-tab active" onclick="selectEkEp('today', event)">Today</button>
@@ -1215,10 +1241,9 @@
 
     <script>
         let currentSankEp = 'today';
-        let currentAmEp = 'today';
-        let currentPurEp = 'today';
+        let currentAmEp   = 'today';
+        let currentPurEp  = 'today';
 
-        // Loading messages per endpoint type
         const loadMsgs = {
             today: 'Reading today\'s tithi alignment…',
             next:  'Charting the next sacred day…',
@@ -1226,7 +1251,7 @@
         };
 
         function toggleBase() {
-            const b = document.getElementById('base-url');
+            const b   = document.getElementById('base-url');
             const btn = document.querySelector('.toggle-btn');
             if (b.value.includes('render.com')) {
                 b.value = 'http://127.0.0.1:8000';
@@ -1237,14 +1262,13 @@
             }
         }
 
+        /* Safe date formatter — avoids UTC midnight → IST timezone shift */
         function fmt(dStr) {
             if (!dStr) return '';
-            // Split manually to avoid UTC-midnight → local timezone date shift
-            // e.g. "2026-03-13" parsed as UTC would show Mar 12 in IST (UTC+5:30)
             const parts = dStr.split('-');
             if (parts.length !== 3) return dStr;
             const [y, m, d] = parts.map(Number);
-            const date = new Date(y, m - 1, d); // local time, no UTC shift
+            const date = new Date(y, m - 1, d);
             return date.toLocaleDateString('en-IN', {
                 weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
             });
@@ -1264,7 +1288,6 @@
             document.getElementById(`${prefix}-loading`).classList.remove('visible');
         }
 
-        /* ── Year skeleton helper ── */
         function showYearSkeleton(gridId) {
             const g = document.getElementById(gridId);
             g.innerHTML = Array(6).fill(0).map(() => `
@@ -1275,7 +1298,9 @@
                 </div>`).join('');
         }
 
-        // 🔱 SANKASHTI
+        /* ══════════════════════════════════════════
+           🔱 SANKASHTI
+        ══════════════════════════════════════════ */
         function selectSankEp(ep, ev) {
             currentSankEp = ep;
             ev.target.closest('.ep-row').querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
@@ -1294,7 +1319,7 @@
             if (currentSankEp === 'year') showYearSkeleton('sank-year-grid');
             try {
                 const res = await fetch(url);
-                const d = await res.json();
+                const d   = await res.json();
                 hideLoading('sank');
                 document.getElementById('sank-result-container').style.display = 'block';
                 renderSank(d, currentSankEp);
@@ -1311,9 +1336,9 @@
                 document.getElementById('sank-today-status').textContent = d.is_sankashti ? '🕉 Today is Sankashti Chaturthi' : 'Today is not Sankashti Chaturthi';
                 document.getElementById('sank-today-date').textContent = fmt(d.date);
             } else if (ep === 'next') {
-                document.getElementById('sank-next-date').textContent = fmt(d.date);
+                document.getElementById('sank-next-date').textContent   = fmt(d.date);
                 document.getElementById('sank-next-days-num').textContent = d.days_until;
-                document.getElementById('sank-next-about').textContent = d.about;
+                document.getElementById('sank-next-about').textContent  = d.about;
             } else {
                 document.getElementById('sank-year-grid').innerHTML = d.dates.map(x => `
                     <div class="year-card">
@@ -1329,7 +1354,9 @@
             document.getElementById('sank-result-container').style.display = 'none';
         }
 
-        // 🌑 AMAVASYA
+        /* ══════════════════════════════════════════
+           🌑 AMAVASYA
+        ══════════════════════════════════════════ */
         function selectAmEp(ep, ev) {
             currentAmEp = ep;
             ev.target.closest('.ep-row').querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
@@ -1348,7 +1375,7 @@
             if (currentAmEp === 'year') showYearSkeleton('am-year-grid');
             try {
                 const res = await fetch(url);
-                const d = await res.json();
+                const d   = await res.json();
                 hideLoading('am');
                 document.getElementById('am-result-container').style.display = 'block';
                 renderAm(d, currentAmEp);
@@ -1363,12 +1390,12 @@
             document.getElementById(`am-result-${ep}`).style.display = 'block';
             if (ep === 'today') {
                 document.getElementById('am-today-status').textContent = d.is_amavasya ? '🪔 Today is Amavasya' : 'Today is not Amavasya';
-                document.getElementById('am-today-date').textContent = fmt(d.date);
-                document.getElementById('am-today-emoji').textContent = d.is_amavasya ? '🌑' : '🌘';
+                document.getElementById('am-today-date').textContent   = fmt(d.date);
+                document.getElementById('am-today-emoji').textContent  = d.is_amavasya ? '🌑' : '🌘';
             } else if (ep === 'next') {
-                document.getElementById('am-next-date').textContent = fmt(d.date);
-                document.getElementById('am-next-days-num').textContent = d.days_until;
-                document.getElementById('am-next-about').textContent = d.about;
+                document.getElementById('am-next-date').textContent      = fmt(d.date);
+                document.getElementById('am-next-days-num').textContent  = d.days_until;
+                document.getElementById('am-next-about').textContent     = d.about;
             } else {
                 document.getElementById('am-year-grid').innerHTML = d.dates.map(x => `
                     <div class="year-card">
@@ -1384,7 +1411,9 @@
             document.getElementById('am-result-container').style.display = 'none';
         }
 
-        // 🌕 PURNIMA
+        /* ══════════════════════════════════════════
+           🌕 PURNIMA
+        ══════════════════════════════════════════ */
         function selectPurEp(ep, ev) {
             currentPurEp = ep;
             ev.target.closest('.ep-row').querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
@@ -1403,7 +1432,7 @@
             if (currentPurEp === 'year') showYearSkeleton('pur-year-grid');
             try {
                 const res = await fetch(url);
-                const d = await res.json();
+                const d   = await res.json();
                 hideLoading('pur');
                 document.getElementById('pur-result-container').style.display = 'block';
                 renderPur(d, currentPurEp);
@@ -1418,11 +1447,11 @@
             document.getElementById(`pur-result-${ep}`).style.display = 'block';
             if (ep === 'today') {
                 document.getElementById('pur-today-status').textContent = d.is_purnima ? '🌕 Today is Purnima' : 'Today is not Purnima';
-                document.getElementById('pur-today-date').textContent = fmt(d.date);
+                document.getElementById('pur-today-date').textContent   = fmt(d.date);
             } else if (ep === 'next') {
-                document.getElementById('pur-next-date').textContent = fmt(d.date);
-                document.getElementById('pur-next-days-num').textContent = d.days_until;
-                document.getElementById('pur-next-about').textContent = d.about;
+                document.getElementById('pur-next-date').textContent      = fmt(d.date);
+                document.getElementById('pur-next-days-num').textContent  = d.days_until;
+                document.getElementById('pur-next-about').textContent     = d.about;
             } else {
                 document.getElementById('pur-year-grid').innerHTML = (d.dates || []).map(x => `
                     <div class="year-card">
@@ -1437,18 +1466,22 @@
             document.getElementById('pur-idle').style.display = 'flex';
             document.getElementById('pur-result-container').style.display = 'none';
         }
-        // 🪔 EKADASHI
-        let currentEkEp = 'today';
+
+        /* ══════════════════════════════════════════
+           🪔 EKADASHI  — fixed: abort in-flight fetch on tab switch / reset
+        ══════════════════════════════════════════ */
+        let currentEkEp   = 'today';
+        let ekAbortCtrl   = null;   // AbortController for current fetch
+        let ekMsgInterval = null;   // setInterval handle for loading messages
+
         const EK_BASE = 'https://ekadashi-api.onrender.com';
 
-        // Endpoint map — correct paths confirmed from Network tab
         const EK_PATHS = {
             today: () => `${EK_BASE}/today`,
             next:  () => `${EK_BASE}/next`,
             year:  () => `${EK_BASE}/year/${document.getElementById('ek-year-in').value}`
         };
 
-        // Cold start messages (Render free tier sleeps — first request ~15–20s)
         const EK_LOADING_MSGS = [
             'Seeking the eleventh tithi…',
             'Waking the cosmic server…',
@@ -1461,33 +1494,51 @@
             ev.target.closest('.ep-row').querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
             ev.target.classList.add('active');
             document.getElementById('ek-year-param').style.display = ep === 'year' ? 'block' : 'none';
-            resetEk();
+            resetEk();   // cancels any in-flight fetch too
         }
 
         async function fetchEk() {
+            // Cancel any previous in-flight fetch before starting a new one
+            if (ekAbortCtrl) ekAbortCtrl.abort();
+            ekAbortCtrl = new AbortController();
+            const signal = ekAbortCtrl.signal;
+
             const url = EK_PATHS[currentEkEp]();
             showLoading('ek', currentEkEp);
             if (currentEkEp === 'year') showYearSkeleton('ek-year-grid');
 
-            // Cycle through messages every 4s to reassure user during cold start
+            // Cycle through messages every 4s during cold-start wait
             let msgIdx = 0;
+            clearInterval(ekMsgInterval);   // clear any stale interval first
             const msgEl = document.getElementById('ek-loading-msg');
-            const cycleMsg = setInterval(() => {
+            ekMsgInterval = setInterval(() => {
                 msgIdx = (msgIdx + 1) % EK_LOADING_MSGS.length;
                 if (msgEl) msgEl.textContent = EK_LOADING_MSGS[msgIdx];
             }, 4000);
 
             try {
-                const res = await fetch(url);
-                clearInterval(cycleMsg);
+                const res = await fetch(url, { signal });
+                clearInterval(ekMsgInterval);
+                ekMsgInterval = null;
+
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const d = await res.json();
                 console.log('[Ekadashi API response]', d);
+
+                // Guard: if the user switched tab / reset while fetch was in flight, ignore result
+                if (signal.aborted) return;
+
                 hideLoading('ek');
                 document.getElementById('ek-result-container').style.display = 'block';
                 renderEk(d, currentEkEp);
+
             } catch (e) {
-                clearInterval(cycleMsg);
+                clearInterval(ekMsgInterval);
+                ekMsgInterval = null;
+
+                // AbortError means user switched tabs — silently cancel, no error shown
+                if (e.name === 'AbortError') return;
+
                 hideLoading('ek');
                 showEkError(`Could not reach API. (${e.message})`);
             }
@@ -1500,8 +1551,8 @@
             document.getElementById('ek-result-today').style.display = 'block';
             document.getElementById('ek-today-status').textContent = '⚠️ ' + msg;
             document.getElementById('ek-today-status').style.color = 'var(--luxury-gold)';
-            document.getElementById('ek-today-name').textContent = 'Open browser DevTools → Console to see exact API response.';
-            document.getElementById('ek-today-date').textContent = '';
+            document.getElementById('ek-today-name').textContent   = 'Open browser DevTools → Console to see exact API response.';
+            document.getElementById('ek-today-date').textContent   = '';
         }
 
         function renderEk(d, ep) {
@@ -1509,26 +1560,24 @@
             document.getElementById(`ek-result-${ep}`).style.display = 'block';
 
             if (ep === 'today') {
-                // Handle various possible field names from API
-                const isE = d.is_ekadashi ?? d.is_today ?? d.ekadashi ?? false;
+                const isE  = d.is_ekadashi ?? d.is_today ?? d.ekadashi ?? false;
                 const name = d.name ?? d.ekadashi_name ?? d.title ?? '';
                 const date = d.date ?? d.today ?? '';
                 document.getElementById('ek-today-status').textContent = isE ? '🪔 Today is Ekadashi' : 'Today is not Ekadashi';
-                document.getElementById('ek-today-name').textContent = name;
-                document.getElementById('ek-today-date').textContent = fmt(date);
+                document.getElementById('ek-today-name').textContent   = name;
+                document.getElementById('ek-today-date').textContent   = fmt(date);
 
             } else if (ep === 'next') {
-                const name = d.name ?? d.ekadashi_name ?? d.title ?? '';
-                const date = d.date ?? d.next_date ?? '';
-                const days = d.days_until ?? d.days ?? d.days_remaining ?? '';
+                const name  = d.name ?? d.ekadashi_name ?? d.title ?? '';
+                const date  = d.date ?? d.next_date ?? '';
+                const days  = d.days_until ?? d.days ?? d.days_remaining ?? '';
                 const about = d.about ?? d.description ?? d.significance ?? '';
-                document.getElementById('ek-next-name').textContent = name;
-                document.getElementById('ek-next-date').textContent = fmt(date);
-                document.getElementById('ek-next-days-num').textContent = days;
-                document.getElementById('ek-next-about').textContent = about;
+                document.getElementById('ek-next-name').textContent      = name;
+                document.getElementById('ek-next-date').textContent      = fmt(date);
+                document.getElementById('ek-next-days-num').textContent  = days;
+                document.getElementById('ek-next-about').textContent     = about;
 
             } else {
-                // year — handle both {dates:[]} and array response directly
                 const list = Array.isArray(d) ? d : (d.dates ?? d.ekadashis ?? d.data ?? []);
                 document.getElementById('ek-year-grid').innerHTML = list.map(x => `
                     <div class="year-card">
@@ -1540,6 +1589,10 @@
         }
 
         function resetEk() {
+            // Abort any in-flight fetch
+            if (ekAbortCtrl) { ekAbortCtrl.abort(); ekAbortCtrl = null; }
+            // Stop any cycling message interval
+            clearInterval(ekMsgInterval); ekMsgInterval = null;
             hideLoading('ek');
             document.getElementById('ek-idle').style.display = 'flex';
             document.getElementById('ek-result-container').style.display = 'none';
