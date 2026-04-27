@@ -14,7 +14,7 @@ The API provides endpoints to:
 - Find the **next Purnima**
 - Generate the **full Purnima calendar for a year**
 
----
+----
 
 # 🔗 Live Links
 
